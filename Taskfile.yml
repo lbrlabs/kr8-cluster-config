@@ -5,52 +5,42 @@
          "cmds": [
             "kr8-helpers check-environment",
             {
-               "task": "lbr"
-            },
-            {
-               "task": "do"
+               "task": "gcloud"
             }
          ]
       },
-      "do": {
+      "gcloud": {
          "cmds": [
             {
-               "task": "do_taskfile"
+               "task": "gcloud_taskfile"
             },
-            "task -d tmp/do default"
+            "task -d tmp/gcloud generate"
          ],
-         "desc": "generate components for do"
+         "desc": "generate components for gcloud"
       },
-      "do_taskfile": {
+      "gcloud_deploy": {
          "cmds": [
-            "mkdir -p tmp/do",
-            "kr8 jsonnet render --cluster do --format yaml templates/task-generate-cluster-sequential.jsonnet > tmp/do/Taskfile.yml"
+            "task -d tmp/gcloud deploy"
          ],
-         "desc": "generate task file in tmp directory for cluster: do"
+         "desc": "deploy all components for cluster: gcloud"
       },
-      "lbr": {
+      "gcloud_dryrun": {
          "cmds": [
-            {
-               "task": "lbr_taskfile"
-            },
-            "task -d tmp/lbr default"
+            "task -d tmp/gcloud dryrun"
          ],
-         "desc": "generate components for lbr"
+         "desc": "dryrun all components for cluster: gcloud"
       },
-      "lbr_taskfile": {
+      "gcloud_taskfile": {
          "cmds": [
-            "mkdir -p tmp/lbr",
-            "kr8 jsonnet render --cluster lbr --format yaml templates/task-generate-cluster-sequential.jsonnet > tmp/lbr/Taskfile.yml"
+            "mkdir -p tmp/gcloud",
+            "kr8 jsonnet render --cluster gcloud --format yaml templates/task-generate-cluster-parallel.jsonnet > tmp/gcloud/Taskfile.yml"
          ],
-         "desc": "generate task file in tmp directory for cluster: lbr"
+         "desc": "generate task file in tmp directory for cluster: gcloud"
       },
       "taskfiles": {
          "cmds": [
             {
-               "task": "lbr_taskfile"
-            },
-            {
-               "task": "do_taskfile"
+               "task": "gcloud_taskfile"
             }
          ],
          "desc": "generate task files for all clusters"

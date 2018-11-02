@@ -47,24 +47,30 @@ fi
 
 namespace="$(cat $compdir/metadata/namespace_default)"
 
+if [ ! -z "$KR8_USER" ]
+then
+  RUNUSER=${KR8_USER}
+else
+  RUNUSER=${USER}
+fi
 
 cfgcluster=$(echo $cluster | sed 's/-k//')
 
 case "$action" in
   dry-run)
-    kubecfg --context "${USER}@${cfgcluster}" update $kubecfg_update_args --dry-run $gc_opt $gc_tag --namespace $namespace $compdir/manifest/*.yaml
+    kubecfg --context "${RUNUSER}@${cfgcluster}" update $kubecfg_update_args --dry-run $gc_opt $gc_tag --namespace $namespace $compdir/manifest/*.yaml
     ;;
   update)
-    kubecfg --context "${USER}@${cfgcluster}" update $kubecfg_update_args $gc_opt $gc_tag --namespace $namespace $compdir/manifest/*.yaml
+    kubecfg --context "${RUNUSER}@${cfgcluster}" update $kubecfg_update_args $gc_opt $gc_tag --namespace $namespace $compdir/manifest/*.yaml
     ;;
   delete)
-    kubecfg --context "${USER}@${cfgcluster}" delete --namespace $namespace $compdir/manifest/*.yaml
+    kubecfg --context "${RUNUSER}@${cfgcluster}" delete --namespace $namespace $compdir/manifest/*.yaml
     ;;
   diff)
-    kubecfg --context "${USER}@${cfgcluster}" diff --diff-strategy=subset --namespace $namespace $compdir/manifest/*.yaml
+    kubecfg --context "${RUNUSER}@${cfgcluster}" diff --diff-strategy=subset --namespace $namespace $compdir/manifest/*.yaml
     ;;
   validate)
-    kubecfg --context "${USER}@${cfgcluster}" validate $kubecfg_update_args --namespace $namespace $compdir/manifest/*.yaml
+    kubecfg --context "${RUNUSER}@${cfgcluster}" validate $kubecfg_update_args --namespace $namespace $compdir/manifest/*.yaml
     ;;
   *)
     echo "Unknown action"

@@ -158,10 +158,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - guestbook.lbrlabs.com
+    - gb.lbrlabs.com
     secretName: guestbook-tls
   rules:
-  - host: guestbook.lbrlabs.com
+  - host: gb.lbrlabs.com
     http:
       paths:
       - path: /
