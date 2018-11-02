@@ -15,5 +15,22 @@
     sealed_secrets: { path: 'components/sealed_secrets' },
 
   },
-    // Components for AWS clusters
+
+  cert_manager+: {
+    acme: {
+      email: 'lee@leebriggs.co.uk',
+    },
+    dns_providers: [
+      {
+        name: 'cloudflare',
+        cloudflare: {
+          email: 'lee@leebriggs.co.uk',
+            apiKeySecretRef: {
+              name: 'cert-manager-secret',
+              key: 'cloudflare_api_key',
+            },
+          },
+      },
+    ],
+  },
 }
