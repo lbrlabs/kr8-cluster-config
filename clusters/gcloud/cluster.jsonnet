@@ -28,4 +28,6 @@
       'briggs.work',
     ],
   },
+
+  sealed_secrets+: (import 'sealed-secret.key'),
 }

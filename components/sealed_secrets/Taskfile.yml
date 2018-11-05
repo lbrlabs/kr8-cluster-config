@@ -18,3 +18,4 @@ tasks:
     cmds:
       - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers clean-output
       - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers yaml-install vendored/sealedsecret-crd.yaml vendored/controller.yaml
+      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers jsonnet-render secret.jsonnet
