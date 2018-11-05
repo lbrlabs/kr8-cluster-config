@@ -10,9 +10,14 @@
   _components+: {
     sealed_secrets: { path: 'components/sealed_secrets' },
     nginx_ingress: { path: 'components/nginx_ingress' },
+    kiam: { path: 'components/kiam' },  // only needed on AWS clusters
     //cert_manager: { path: 'components/cert_manager' },
   },
 
+
+  kiam+: (import 'kiam-secrets.json') + {
+    // extra params
+  },
 
   sealed_secrets+: (import 'sealed-secret.key'),
 }

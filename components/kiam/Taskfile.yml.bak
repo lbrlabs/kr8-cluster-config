@@ -1,0 +1,41 @@
+version: 2
+
+vars:
+  KR8_COMPONENT: kiam
+  CHART_VER: 1.1.0
+  CHART_NAME: kiam
+
+tasks:
+  fetch:
+    desc: "fetch component dependencies"
+    cmds:
+      - rm -fr charts; mkdir charts
+      - helm fetch --repo https://kubernetes-charts.storage.googleapis.com --untar --untardir ./charts --version "{{.CHART_VER}}" "{{.CHART_NAME}}"
+
+
+  generate:
+    desc: "generate"
+    cmds:
+      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers clean-output
+      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers helm-render-with-patch "{{.CHART_NAME}}" patches.jsonnet
+      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers jsonnet-render secrets.jsonnet
+  secrets:
+    desc: "generate files for sealed secret creation"
+    cmds:
+      - mkdir -p tmp
+      - rm -f tmp/*
+      - kr8 jsonnet render --cluster "{{.KR8_CLUSTER}}" --format json secrets/ca.jsonnet > tmp/ca.json
+      - kr8 jsonnet render --cluster "{{.KR8_CLUSTER}}" --format json secrets/agent.jsonnet > tmp/agent.json
+      - kr8 jsonnet render --cluster "{{.KR8_CLUSTER}}" --format json secrets/server.jsonnet > tmp/server.json
+      - task: secrets_gen
+  secrets_gen:
+    dir: tmp
+    cmds:
+      - cfssl gencert -initca ca.json | cfssljson -bare ca
+      - cfssl gencert -ca=ca.pem -ca-key=ca-key.pem server.json | cfssljson -bare server
+      - cfssl gencert -ca=ca.pem -ca-key=ca-key.pem agent.json | cfssljson -bare agent
+      - kubectl create secret generic kiam-server -n kube-system --from-file=ca=ca.pem --from-file=cert=server.pem --from-file=key=server-key.pem --dry-run -o json > server.secret
+      - kubectl create secret generic kiam-agent -n kube-system --from-file=ca=ca.pem --from-file=cert=agent.pem --from-file=key=agent-key.pem --dry-run -o json > agent.secret
+      - kubeseal --context {{.USER}}@{{.KR8_CLUSTER}} < server.secret | jq .spec.encryptedData > kiam-server-encrypted.json
+      - kubeseal --context {{.USER}}@{{.KR8_CLUSTER}} < agent.secret | jq .spec.encryptedData > kiam-agent-encrypted.json
+
