@@ -1,3 +1,5 @@
 secretfile filter=git-crypt diff=git-crypt
 *.key filter=git-crypt diff=git-crypt
-secret.* filter=git-crypt diff=git-crypt
+secret.yaml filter=git-crypt diff=git-crypt
+secret.yml filter=git-crypt diff=git-crypt
+secret.json filter=git-crypt diff=git-crypt
