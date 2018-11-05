@@ -6,6 +6,9 @@
             "kr8-helpers check-environment",
             {
                "task": "gcloud"
+            },
+            {
+               "task": "kops"
             }
          ]
       },
@@ -37,10 +40,41 @@
          ],
          "desc": "generate task file in tmp directory for cluster: gcloud"
       },
+      "kops": {
+         "cmds": [
+            {
+               "task": "kops_taskfile"
+            },
+            "task -d tmp/kops generate"
+         ],
+         "desc": "generate components for kops"
+      },
+      "kops_deploy": {
+         "cmds": [
+            "task -d tmp/kops deploy"
+         ],
+         "desc": "deploy all components for cluster: kops"
+      },
+      "kops_dryrun": {
+         "cmds": [
+            "task -d tmp/kops dryrun"
+         ],
+         "desc": "dryrun all components for cluster: kops"
+      },
+      "kops_taskfile": {
+         "cmds": [
+            "mkdir -p tmp/kops",
+            "kr8 jsonnet render --cluster kops --format yaml templates/task-generate-cluster-parallel.jsonnet > tmp/kops/Taskfile.yml"
+         ],
+         "desc": "generate task file in tmp directory for cluster: kops"
+      },
       "taskfiles": {
          "cmds": [
             {
                "task": "gcloud_taskfile"
+            },
+            {
+               "task": "kops_taskfile"
             }
          ],
          "desc": "generate task files for all clusters"
