@@ -92,27 +92,17 @@ spec:
       containers:
       - args:
         - --log-level=debug
-        - --domain-filter=lbrlabs.com
-        - --domain-filter=briggs.io
-        - --domain-filter=briggs.work
+        - --domain-filter=leebriggs.net
         - --policy=sync
-        - --provider=cloudflare
+        - --provider=aws
         - --registry=txt
-        - --txt-owner-id=gcloud-lbr
-        - --txt-prefix=gcloud
+        - --txt-owner-id=kops
+        - --txt-prefix=kops
         - --source=service
         - --source=ingress
         env:
-        - name: CF_API_EMAIL
-          valueFrom:
-            secretKeyRef:
-              key: CF_API_EMAIL
-              name: external-dns
-        - name: CF_API_KEY
-          valueFrom:
-            secretKeyRef:
-              key: CF_API_KEY
-              name: external-dns
+        - name: AWS_DEFAULT_REGION
+          value: us-east-1
         image: registry.opensource.zalan.do/teapot/external-dns:v0.5.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
@@ -122,6 +112,8 @@ spec:
         name: external-dns
         ports:
         - containerPort: 7979
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
       serviceAccountName: external-dns
       tolerations:
       - effect: NoSchedule

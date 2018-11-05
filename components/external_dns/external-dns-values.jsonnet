@@ -8,19 +8,17 @@ local config = std.extVar('kr8');
   [if std.objectHas(config, 'txtPrefix') then 'txtPrefix']: config.txtPrefix,
   aws: {} + if std.objectHas(config, 'aws') then config.aws else {},
   extraEnv: {} + if std.objectHas(config, 'extraEnv') then config.extraEnv else {},
-  /*
-  nodeSelector: {
+  [if config.tolerateMasters then 'nodeSelector']: {
     'node-role.kubernetes.io/master': '',
   },
   tolerations: [
-    {
-      operator: 'Exists',
-      value: '',
-      effect: 'NoSchedule',
-      key: 'node-role.kubernetes.io/master',
-    },
-  ],
-  */
+      {
+        operator: 'Exists',
+        value: '',
+        effect: 'NoSchedule',
+        key: 'node-role.kubernetes.io/master',
+      },
+    ],
   registry: 'txt',
   rbac: {
     create: true,

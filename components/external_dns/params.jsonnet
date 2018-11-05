@@ -7,4 +7,5 @@
   // must be a list
   domainFilters: [],
   txtOwnerId: std.format('%s', $._cluster.cluster_name),
+  tolerateMasters: false,
 }

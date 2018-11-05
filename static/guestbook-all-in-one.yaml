@@ -158,10 +158,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - gb.lbrlabs.com
+    - guestbook.leebriggs.net
     secretName: guestbook-tls
   rules:
-  - host: gb.lbrlabs.com
+  - host: guestbook.leebriggs.net
     http:
       paths:
       - path: /

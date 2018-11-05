@@ -10,13 +10,24 @@
   _components+: {
     sealed_secrets: { path: 'components/sealed_secrets' },
     nginx_ingress: { path: 'components/nginx_ingress' },
-    kiam: { path: 'components/kiam' },  // only needed on AWS clusters
+    //kiam: { path: 'components/kiam' },  // only needed on AWS clusters
+    external_dns: { path: 'components/external_dns' },
     //cert_manager: { path: 'components/cert_manager' },
   },
 
 
   kiam+: (import 'kiam-secrets.json') + {
     // extra params
+  },
+
+  external_dns+: {
+    provider: 'aws',
+    tolerateMasters: true,
+    txtPrefix: 'kops',
+    txtOwnerId: 'kops',
+    domainFilters: [
+      'leebriggs.net',
+    ],
   },
 
   sealed_secrets+: (import 'sealed-secret.key'),
