@@ -5,12 +5,43 @@
          "cmds": [
             "kr8-helpers check-environment",
             {
+               "task": "do"
+            },
+            {
                "task": "gcloud"
             },
             {
                "task": "kops"
             }
          ]
+      },
+      "do": {
+         "cmds": [
+            {
+               "task": "do_taskfile"
+            },
+            "task -d tmp/do generate"
+         ],
+         "desc": "generate components for do"
+      },
+      "do_deploy": {
+         "cmds": [
+            "task -d tmp/do deploy"
+         ],
+         "desc": "deploy all components for cluster: do"
+      },
+      "do_dryrun": {
+         "cmds": [
+            "task -d tmp/do dryrun"
+         ],
+         "desc": "dryrun all components for cluster: do"
+      },
+      "do_taskfile": {
+         "cmds": [
+            "mkdir -p tmp/do",
+            "kr8 jsonnet render --cluster do --format yaml templates/task-generate-cluster-parallel.jsonnet > tmp/do/Taskfile.yml"
+         ],
+         "desc": "generate task file in tmp directory for cluster: do"
       },
       "gcloud": {
          "cmds": [
@@ -70,6 +101,9 @@
       },
       "taskfiles": {
          "cmds": [
+            {
+               "task": "do_taskfile"
+            },
             {
                "task": "gcloud_taskfile"
             },
