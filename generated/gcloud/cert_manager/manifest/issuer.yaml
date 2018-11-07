@@ -5,16 +5,8 @@ metadata:
   name: letsencrypt
 spec:
   acme:
-    dns01:
-      providers:
-      - cloudflare:
-          apiKeySecretRef:
-            key: cloudflare_api_key
-            name: cert-manager-secret
-          email: lee@leebriggs.co.uk
-        name: cloudflare
     email: lee@leebriggs.co.uk
     privateKeySecretRef:
-      name: cloudflare
+      name: letsencrypt
     server: https://acme-v02.api.letsencrypt.org/directory
 
