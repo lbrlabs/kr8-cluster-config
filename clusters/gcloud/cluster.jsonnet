@@ -11,8 +11,13 @@
     nginx_ingress: { path: 'components/nginx_ingress' },
     external_dns: { path: 'components/external_dns' },
     cert_manager: { path: 'components/cert_manager' },
+    guestbook: { path: 'components/guestbook' },
   },
 
+
+  guestbook+: {
+    url: 'guestbook.lbrlabs.com',
+  },
   external_dns+: {
     extraEnv: {
       CF_API_KEY: 'AgCwfJ1jnneJM2v4AfH/K6xSuL8limGGSntRxW54EWcm1DjWYPMv0RdBPUSPdm6aYFNdLxdb5MAVVWCio3RuxCiNuhFjzQcW7VzzVwyHTh2ev8vMpbu9GrC1liz5cTMDEoaxO/EsJ2h4bO9dUmfBCygBnXuIqpt3POzAiwzNkhvQLNxBZuvuea1n/ZGxec6rA1cmu/P/TqV2rXeWqamr2WLUAM40w3WUXGkxXANGBAPLlgd5pMUtR06h+JHlnB1S1pRzzdGJF3lS6ra0qh8VW30OtVFM8+Ug2GHR4OwCuE21EQ/jgjrf6+xTbQ3jKfY3un1gwUyyrDWM2wP/IojyT3o0/UxO7sTHLqUfhY/3mW291JHncl5mowDZe79iOHN2nvva0N5qHE0zdBxgR0Y4/jFeLJ2rn9rooj8b7zcfBLyKK7ZR1zrf85hfwAmS0eMIKqyqvy9F3xy5+x0PbwmDEzZH5scj8Ha4uFDuaf+VHvU/eLwPnlcpi2x32ah5Rgd9hy2MmTW7KLqJFUWkSuJHFZKOwBlJltPFtWft9/KnC/OsuqrwmbH+eNeCq/FVmUjrKzqpcCR73fisLSDj9ESm/WUOd3pHNgJqulau1oqs86gs55agH9CXX3xeIQTPy0NqGvBIjvAAN53TRXfRRTX2Bv1wycrln4dC3esueDDo2bY4akpkkfqbKcAkFY7upZXwK7SZjlyC4TzgoWuxy9IbZfejhfT6kT0B6pZEvCKWGJbYl2a5y8X3',
