@@ -18,13 +18,9 @@ kube.objectValues(
         email: config.acme.email,
         server: 'https://acme-v02.api.letsencrypt.org/directory',
         privateKeySecretRef: {
-          name: 'cloudflare',
+          name: 'letsencrypt',
         },
-        http01: {
-        },
-        dns01: {
-          providers: config.dns_providers,
-        },
+        http01: {},
       },
     },
   },

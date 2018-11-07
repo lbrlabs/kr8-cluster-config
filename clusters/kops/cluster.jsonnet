@@ -12,7 +12,8 @@
     nginx_ingress: { path: 'components/nginx_ingress' },
     //kiam: { path: 'components/kiam' },  // only needed on AWS clusters
     external_dns: { path: 'components/external_dns' },
-    //cert_manager: { path: 'components/cert_manager' },
+    cert_manager: { path: 'components/cert_manager' },
+    guestbook: { path: 'components/guestbook' },
   },
 
 
@@ -28,6 +29,10 @@
     domainFilters: [
       'leebriggs.net',
     ],
+  },
+
+  guestbook+: {
+    url: 'gb.leebriggs.net',
   },
 
   sealed_secrets+: (import 'sealed-secret.key'),
