@@ -9,11 +9,15 @@
   },
   _components+: {
     sealed_secrets: { path: 'components/sealed_secrets' },
-    //nginx_ingress: { path: 'components/nginx_ingress' },
-    //kiam: { path: 'components/kiam' },  // only needed on AWS clusters
-    //external_dns: { path: 'components/external_dns' },
     cert_manager: { path: 'components/cert_manager' },
-    //guestbook: { path: 'components/guestbook' },
+    nginx_ingress: { path: 'components/nginx_ingress' },
+
+    /*
+    external_dns: { path: 'components/external_dns' },
+    guestbook: { path: 'components/guestbook' },
+    */
+
+    //kiam: { path: 'components/kiam' },  // only needed on AWS clusters
   },
 
 
@@ -21,7 +25,7 @@
     // extra params
   },
 
-  /*
+
   external_dns+: {
     provider: 'aws',
     tolerateMasters: true,
@@ -32,11 +36,11 @@
     ],
   },
 
-  /*
+
   guestbook+: {
     url: 'gb.leebriggs.net',
   },
-  */
+
 
   sealed_secrets+: (import 'sealed-secret.key'),
 }
