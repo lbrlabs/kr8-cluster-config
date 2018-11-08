@@ -11,14 +11,14 @@ local config = std.extVar('kr8');
   [if config.tolerateMasters then 'nodeSelector']: {
     'node-role.kubernetes.io/master': '',
   },
-  tolerations: [
+  [if config.tolerateMasters then 'tolerations']: [
       {
         operator: 'Exists',
         value: '',
         effect: 'NoSchedule',
         key: 'node-role.kubernetes.io/master',
       },
-    ],
+  ],
   registry: 'txt',
   rbac: {
     create: true,
