@@ -1,11 +1,10 @@
 {
   _cluster+: {
-    tier: 'dev',
-    region_name: 'us-west-2',
-    cluster_name: 'kops',
-    cluster_type: 'aws',
-    dns_domain: 'leebriggs.net',
-    aws_region: 'us-west-2',
+    tier: 'prod',
+    region_name: 'sfo2',
+    cluster_name: 'do',
+    cluster_type: 'digitalocean',
+    dns_domain: 'briggs.work',
   },
   _components+: {
     sealed_secrets: { path: 'components/sealed_secrets' },

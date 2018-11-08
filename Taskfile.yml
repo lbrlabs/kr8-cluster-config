@@ -14,9 +14,6 @@
                "task": "kops"
             },
             {
-               "task": "docker-for-desktop"
-            },
-            {
                "task": "minikube"
             }
          ]
@@ -48,34 +45,6 @@
             "kr8 jsonnet render --cluster do --format yaml templates/task-generate-cluster-parallel.jsonnet > tmp/do/Taskfile.yml"
          ],
          "desc": "generate task file in tmp directory for cluster: do"
-      },
-      "docker-for-desktop": {
-         "cmds": [
-            {
-               "task": "docker-for-desktop_taskfile"
-            },
-            "task -d tmp/docker-for-desktop generate"
-         ],
-         "desc": "generate components for docker-for-desktop"
-      },
-      "docker-for-desktop_deploy": {
-         "cmds": [
-            "task -d tmp/docker-for-desktop deploy"
-         ],
-         "desc": "deploy all components for cluster: docker-for-desktop"
-      },
-      "docker-for-desktop_dryrun": {
-         "cmds": [
-            "task -d tmp/docker-for-desktop dryrun"
-         ],
-         "desc": "dryrun all components for cluster: docker-for-desktop"
-      },
-      "docker-for-desktop_taskfile": {
-         "cmds": [
-            "mkdir -p tmp/docker-for-desktop",
-            "kr8 jsonnet render --cluster docker-for-desktop --format yaml templates/task-generate-cluster-parallel.jsonnet > tmp/docker-for-desktop/Taskfile.yml"
-         ],
-         "desc": "generate task file in tmp directory for cluster: docker-for-desktop"
       },
       "gcloud": {
          "cmds": [
@@ -171,9 +140,6 @@
             },
             {
                "task": "kops_taskfile"
-            },
-            {
-               "task": "docker-for-desktop_taskfile"
             },
             {
                "task": "minikube_taskfile"
