@@ -31,11 +31,9 @@
     tolerateMasters: false,
   },
 
-  /*
   guestbook+: {
     url: 'gb.briggs.io',
   },
-  */
 
   sealed_secrets+: (import 'sealed-secret.key'),
 }
