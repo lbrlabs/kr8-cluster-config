@@ -8,7 +8,7 @@ kube.objectValues(
       apiVersion: 'ark.heptio.com/v1',
       kind: 'BackupStorageLocation',
       metadata: {
-        name: config.release_name,
+        name: config.name,
         namespace: config.namespace,
       },
       spec: {
@@ -16,10 +16,7 @@ kube.objectValues(
         objectStorage: {
           bucket: config.bucket_name,
         },
-        config: {
-          s3Url: config.s3_url,
-          region: config.region,
-        },
+        config: config.config,
       },
     },
   }

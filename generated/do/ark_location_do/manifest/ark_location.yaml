@@ -2,7 +2,7 @@
 apiVersion: ark.heptio.com/v1
 kind: BackupStorageLocation
 metadata:
-  name: ark-backup-do
+  name: default
   namespace: heptio-ark
 spec:
   config:
