@@ -11,7 +11,9 @@
     nginx_ingress: { path: 'components/nginx_ingress' },
     external_dns: { path: 'components/external_dns' },
     cert_manager: { path: 'components/cert_manager' },
-    guestbook: { path: 'components/guestbook' },
+    //guestbook: { path: 'components/guestbook' },
+    //prometheus: { path: 'components/prometheus' },
+    //grafana: { path: 'components/grafana' },
   },
 
 
@@ -32,6 +34,16 @@
       'briggs.io',
       'briggs.work',
     ],
+  },
+
+  prometheus+: {
+    ingress_class: 'nginx',
+    prometheus+: {
+      externalName: 'prometheus.lbrlabs.com',
+    },
+  },
+  grafana+: {
+    ingress_name: 'grafana.lbrlabs.com',
   },
 
   sealed_secrets+: (import 'sealed-secret.key'),

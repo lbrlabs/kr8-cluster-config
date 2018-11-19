@@ -123,11 +123,6 @@ spec:
         ports:
         - containerPort: 7979
       serviceAccountName: external-dns
-      tolerations:
-      - effect: NoSchedule
-        key: node-role.kubernetes.io/master
-        operator: Exists
-        value: ""
 
 ---
 apiVersion: v1

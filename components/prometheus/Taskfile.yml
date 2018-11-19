@@ -1,0 +1,26 @@
+version: 2
+
+vars:
+  KR8_COMPONENT: prometheus
+
+tasks:
+  jb_init:
+    cmds:
+      - jb init
+    status:
+      - test -f ./jsonnetfile.json
+
+  fetch:
+    desc: "fetch component dependencies"
+    deps:
+      - jb_init
+    cmds:
+      - jb install github.com/coreos/prometheus-operator/contrib/kube-prometheus/jsonnet/kube-prometheus
+      - rm -fr vendor/kubernetes-mixin/.circleci
+
+  generate:
+    desc: "generate"
+    cmds:
+      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers clean-output
+      - KR8_COMPONENT={{.KR8_COMPONENT}} KR8_JSONNET_ARGS="--jpath jsonnet --jpath vendor --prune=false" kr8-helpers jsonnet-render jsonnet/main.jsonnet 
+

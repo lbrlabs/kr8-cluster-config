@@ -12,11 +12,6 @@ provider: cloudflare
 rbac:
   create: true
 registry: txt
-tolerations:
-- effect: NoSchedule
-  key: node-role.kubernetes.io/master
-  operator: Exists
-  value: ""
 txtOwnerId: gcloud-lbr
 txtPrefix: gcloud
 

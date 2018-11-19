@@ -14,6 +14,8 @@
     cert_manager: { path: 'components/cert_manager' },
     ark: { path: 'components/ark' },
     ark_location_do: { path: 'components/ark_location' },
+    //prometheus: { path: 'components/prometheus' },
+    //grafana: { path: 'components/grafana' },
   },
 
   external_dns+: {
@@ -50,6 +52,16 @@
       s3Url: 'https://sfo2.digitaloceanspaces.com',
       region: $._cluster.region_name,
     },
+  },
+  prometheus+: {
+    ingress_class: 'nginx',
+    prometheus+: {
+      externalName: 'prometheus.briggs.io',
+    },
+  },
+
+  grafana+: {
+    ingress_name: 'grafana.briggs.io',
   },
 
   sealed_secrets+: (import 'sealed-secret.key'),
