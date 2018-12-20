@@ -43,6 +43,9 @@ local config = std.extVar('kr8');
         namespace: $._config.namespace,
         annotations+: {
           'kubernetes.io/ingress.class': config.ingress_class,
+          [if config.ingress_authenabled then 'nginx.ingress.kubernetes.io/auth-type']: 'basic',
+          [if config.ingress_authenabled then 'nginx.ingress.kubernetes.io/auth-realm']: 'Authentication Required - admin',
+          [if config.ingress_authenabled then 'nginx.ingress.kubernetes.io/auth-secret']: 'prometheus-password',
         },
       },
       spec: {

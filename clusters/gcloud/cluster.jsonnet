@@ -12,7 +12,7 @@
     external_dns: { path: 'components/external_dns' },
     cert_manager: { path: 'components/cert_manager' },
     //guestbook: { path: 'components/guestbook' },
-    //prometheus: { path: 'components/prometheus' },
+    prometheus: { path: 'components/prometheus' },
     //grafana: { path: 'components/grafana' },
   },
 
@@ -38,9 +38,11 @@
 
   prometheus+: {
     ingress_class: 'nginx',
+    ingress_enabled: true,
     prometheus+: {
-      externalName: 'prometheus.lbrlabs.com',
+      externalName: 'gcloud-prometheus.lbrlabs.com',
     },
+    password+: 'AgAZdS+bPBlQwXgrXc51zsd1JyyitZXgWmhxKl+5ku7xEBPtAYoT224e94MR4aO8DF/4Sg10zyx5CEyuML00UBb6L2A1sQuhV1Lc/xeOxQ7y9ILY71Gxi/PGteS2yCjZnVh0/aB7ILT+n7qOBlVTi1Oh53OdvJlHJBBJkIvXHf5EoR7T2aByL7tK0Iwig8guPN+al9rwSDNlw1P17o/jWCOigO59hBsplTDP9gYgG5sRY7920IQS5Fte3QFrNUu5NR9v5oXVyqgvek8yEFGJSKwvo3HtndcNLyup4/bJQrdQxjc3Duc/H6T9UB2SCFSGiSBMSxDu2UWySMbmLDtFlTdNSgfmHlH2krW8zFMTqZfa4HKXCgpwi4jEnIAX39nYHGltdWd8kHFzrFw251ZCu6wLRA2hBaNQaturC4ojLQnRniP8oFaq2jrn6RgzpN87D/Uy0fHL4jlIsF3vXAUUTzjnI27iu5/G/pUoeoeLNjr3zTi89fMVnmHkL8ajCtZNAAuqWS1I9O4QcMBwPHE1hrormc/ECRxjYPsOVFlRtWOs2skADIwcyYAfCo20mKtW/WJ+mNfXTQzyao1wRqRZVwmjTvB/kkP7srKvAf4P4iGLXRdnW7TMhp9zq1/nNm9+od5P7NN1N5yxuWr+uqQaJaa7b8Q9+e9HpquerjlZ3gBHGuIyfIHHUkwdwLaAZj64bq4i32qAuabJefWSDXdGA1c796YLyTtyJj6IsEk6BhEydu5/xLBM1NB9gYQ6rg==',
   },
   grafana+: {
     ingress_name: 'grafana.lbrlabs.com',

@@ -61,7 +61,7 @@ case "$action" in
     kubecfg --context "${RUNUSER}@${cfgcluster}" update $kubecfg_update_args --dry-run $gc_opt $gc_tag --namespace $namespace $compdir/manifest/*.yaml
     ;;
   update)
-    kubecfg --context "${RUNUSER}@${cfgcluster}" update $kubecfg_update_args $gc_opt $gc_tag --namespace $namespace $compdir/manifest/*.yaml
+    kubecfg --context "${RUNUSER}@${cfgcluster}" update --ignore-unknown  $kubecfg_update_args $gc_opt $gc_tag --namespace $namespace $compdir/manifest/*.yaml
     ;;
   delete)
     kubecfg --context "${RUNUSER}@${cfgcluster}" delete --namespace $namespace $compdir/manifest/*.yaml
@@ -70,7 +70,7 @@ case "$action" in
     kubecfg --context "${RUNUSER}@${cfgcluster}" diff --diff-strategy=subset --namespace $namespace $compdir/manifest/*.yaml
     ;;
   validate)
-    kubecfg --context "${RUNUSER}@${cfgcluster}" validate $kubecfg_update_args --namespace $namespace $compdir/manifest/*.yaml
+    kubecfg --context "${RUNUSER}@${cfgcluster}" validate --ignore-unknown $kubecfg_update_args --namespace $namespace $compdir/manifest/*.yaml
     ;;
   *)
     echo "Unknown action"

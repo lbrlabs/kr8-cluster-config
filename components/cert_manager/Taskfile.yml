@@ -18,5 +18,5 @@ tasks:
     cmds:
       - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers clean-output
       - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers helm-render "{{.CHART_NAME}}"
-      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers jsonnet-render issuer.jsonnet
+      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers jsonnet-render zz_issuer.jsonnet
 

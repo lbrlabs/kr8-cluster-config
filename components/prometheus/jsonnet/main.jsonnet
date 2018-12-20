@@ -49,5 +49,6 @@ kube.objectValues(
   //{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }+
   (import 'service-monitors.jsonnet') +  // define service monitors
   (import 'alertmanager-external.jsonnet') +  // define external alertmanager endpoint
+  (import 'secret.jsonnet') +  // define basic auth secret
   {}
 )

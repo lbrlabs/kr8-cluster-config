@@ -161,7 +161,7 @@ spec:
     - guestbook.leebriggs.net
     secretName: guestbook-tls
   rules:
-  - host: guestbook.leebriggs.net
+  - host: guestbook.briggs.io
     http:
       paths:
       - path: /

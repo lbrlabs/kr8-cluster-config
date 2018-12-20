@@ -7,6 +7,9 @@
   alertmanager_external_endpoints: [],  // FQDNS of external alert managers, and tcp port (e.g. host.domain:443)
   ingress_class: 'default',
   ingress_enabled: false,
+  ingress_authenabled: true,
+
+  password: '',
 
   prometheus: {
     externalName: $._cluster.cluster_name + '-prom.apps.' + $._cluster.dns_domain,
