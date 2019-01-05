@@ -10,6 +10,7 @@
     sealed_secrets: { path: 'components/sealed_secrets' },
     nginx_ingress: { path: 'components/nginx_ingress' },
     external_dns: { path: 'components/external_dns' },
+    crossplane: { path: 'components/crossplane' },
     //guestbook: { path: 'components/guestbook' },
     cert_manager: { path: 'components/cert_manager' },
     //ark: { path: 'components/ark' },

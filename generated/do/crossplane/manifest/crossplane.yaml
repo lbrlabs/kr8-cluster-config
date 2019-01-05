@@ -1,0 +1,1785 @@
+---
+apiVersion: v1
+imagePullSecrets:
+- name: dockerhub
+kind: ServiceAccount
+metadata:
+  labels:
+    app: crossplane
+    chart: crossplane-0.0.0-322.df5b720
+    heritage: Tiller
+    release: crossplane
+  name: crossplane
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: eksclusters.compute.aws.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.state
+    name: STATUS
+    type: string
+  - JSONPath: .status.clusterName
+    name: CLUSTER-NAME
+    type: string
+  - JSONPath: .status.endpoint
+    name: ENDPOINT
+    type: string
+  - JSONPath: .spec.classRef.name
+    name: CLUSTER-CLASS
+    type: string
+  - JSONPath: .spec.location
+    name: LOCATION
+    type: string
+  - JSONPath: .spec.reclaimPolicy
+    name: RECLAIM-POLICY
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: compute.aws.crossplane.io
+  names:
+    kind: EKSCluster
+    plural: eksclusters
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            claimRef:
+              type: object
+            classRef:
+              type: object
+            cliInput:
+              type: string
+            clientRequestToken:
+              type: string
+            clusterVersion:
+              type: string
+            connectionSecretNameOverride:
+              type: string
+            generateCLISkeleton:
+              type: string
+            providerRef:
+              type: object
+            reclaimPolicy:
+              type: string
+            region:
+              enum:
+              - us-west-2
+              - us-east-1
+              - eu-west-1
+              type: string
+            roleARN:
+              type: string
+            securityGroupIds:
+              items:
+                type: string
+              type: array
+            subnetIds:
+              items:
+                type: string
+              type: array
+            vpcId:
+              type: string
+            workerNodes:
+              properties:
+                bootstrapArguments:
+                  type: string
+                clusterControlPlaneSecurityGroup:
+                  type: string
+                keyName:
+                  type: string
+                nodeAutoScalingGroupMaxSize:
+                  format: int64
+                  type: integer
+                nodeAutoScalingGroupMinSize:
+                  format: int64
+                  type: integer
+                nodeGroupName:
+                  type: string
+                nodeImageId:
+                  type: string
+                nodeInstanceType:
+                  enum:
+                  - t2.small
+                  - t2.medium
+                  - t2.large
+                  - t2.xlarge
+                  - t2.2xlarge
+                  - t3.nano
+                  - t3.micro
+                  - t3.small
+                  - t3.medium
+                  - t3.large
+                  - t3.xlarge
+                  - t3.2xlarge
+                  - m3.medium
+                  - m3.large
+                  - m3.xlarge
+                  - m3.2xlarge
+                  - m4.large
+                  - m4.xlarge
+                  - m4.2xlarge
+                  - m4.4xlarge
+                  - m4.10xlarge
+                  - m5.large
+                  - m5.xlarge
+                  - m5.2xlarge
+                  - m5.4xlarge
+                  - m5.12xlarge
+                  - m5.24xlarge
+                  - c4.large
+                  - c4.xlarge
+                  - c4.2xlarge
+                  - c4.4xlarge
+                  - c4.8xlarge
+                  - c5.large
+                  - c5.xlarge
+                  - c5.2xlarge
+                  - c5.4xlarge
+                  - c5.9xlarge
+                  - c5.18xlarge
+                  - i3.large
+                  - i3.xlarge
+                  - i3.2xlarge
+                  - i3.4xlarge
+                  - i3.8xlarge
+                  - i3.16xlarge
+                  - r3.xlarge
+                  - r3.2xlarge
+                  - r3.4xlarge
+                  - r3.8xlarge
+                  - r4.large
+                  - r4.xlarge
+                  - r4.2xlarge
+                  - r4.4xlarge
+                  - r4.8xlarge
+                  - r4.16xlarge
+                  - x1.16xlarge
+                  - x1.32xlarge
+                  - p2.xlarge
+                  - p2.8xlarge
+                  - p2.16xlarge
+                  - p3.2xlarge
+                  - p3.8xlarge
+                  - p3.16xlarge
+                  - r5.large
+                  - r5.xlarge
+                  - r5.2xlarge
+                  - r5.4xlarge
+                  - r5.12xlarge
+                  - r5.24xlarge
+                  - r5d.large
+                  - r5d.xlarge
+                  - r5d.2xlarge
+                  - r5d.4xlarge
+                  - r5d.12xlarge
+                  - r5d.24xlarge
+                  - z1d.large
+                  - z1d.xlarge
+                  - z1d.2xlarge
+                  - z1d.3xlarge
+                  - z1d.6xlarge
+                  - z1d.12xlarge
+                  type: string
+                nodeVolumeSize:
+                  format: int64
+                  type: integer
+              required:
+              - keyName
+              - nodeInstanceType
+              type: object
+          required:
+          - region
+          - roleARN
+          - vpcId
+          - subnetIds
+          - securityGroupIds
+          - workerNodes
+          - providerRef
+          type: object
+        status:
+          properties:
+            cloudformationStackId:
+              type: string
+            connectionSecretRef:
+              type: object
+            endpoint:
+              type: string
+            resourceName:
+              type: string
+            state:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: rdsinstances.database.aws.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.state
+    name: STATUS
+    type: string
+  - JSONPath: .spec.classRef.name
+    name: CLASS
+    type: string
+  - JSONPath: .spec.engineVersion
+    name: VERSION
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: database.aws.crossplane.io
+  names:
+    kind: RDSInstance
+    plural: rdsinstances
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            claimRef:
+              type: object
+            class:
+              type: string
+            classRef:
+              type: object
+            connectionSecretRef:
+              type: object
+            engine:
+              type: string
+            engineVersion:
+              type: string
+            masterUsername:
+              type: string
+            providerRef:
+              type: object
+            reclaimPolicy:
+              type: string
+            securityGroups:
+              items:
+                type: string
+              type: array
+            size:
+              format: int64
+              type: integer
+            subnetGroupName:
+              type: string
+          required:
+          - masterUsername
+          - engine
+          - class
+          - size
+          - providerRef
+          type: object
+        status:
+          properties:
+            endpoint:
+              type: string
+            instanceName:
+              type: string
+            message:
+              type: string
+            providerID:
+              type: string
+            state:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: s3buckets.storage.aws.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .spec.classRef.name
+    name: CLASS
+    type: string
+  - JSONPath: .spec.cannedACL
+    name: PREDEFINED-ACL
+    type: string
+  - JSONPath: .spec.localPermission
+    name: LOCAL-PERMISSION
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: storage.aws.crossplane.io
+  names:
+    kind: S3Bucket
+    plural: s3buckets
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            cannedACL:
+              enum:
+              - private
+              - public-read
+              - public-read-write
+              - authenticated-read
+              - log-delivery-write
+              - aws-exec-read
+              type: string
+            claimRef:
+              type: object
+            classRef:
+              type: object
+            connectionSecretNameOverride:
+              maxLength: 255
+              minLength: 1
+              type: string
+            localPermission:
+              enum:
+              - Read
+              - Write
+              - ReadWrite
+              type: string
+            name:
+              maxLength: 63
+              minLength: 3
+              type: string
+            providerRef:
+              type: object
+            reclaimPolicy:
+              type: string
+            region:
+              type: string
+            versioning:
+              type: boolean
+          required:
+          - region
+          - localPermission
+          - providerRef
+          type: object
+        status:
+          properties:
+            connectionSecretRef:
+              type: object
+            iamUsername:
+              type: string
+            lastLocalPermission:
+              type: string
+            lastUserPolicyVersion:
+              format: int64
+              type: integer
+            message:
+              type: string
+            providerID:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: providers.aws.crossplane.io
+spec:
+  group: aws.crossplane.io
+  names:
+    kind: Provider
+    plural: providers
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            credentialsSecretRef:
+              type: object
+            region:
+              type: string
+          required:
+          - region
+          - credentialsSecretRef
+          type: object
+        status:
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: aksclusters.compute.azure.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.state
+    name: STATUS
+    type: string
+  - JSONPath: .status.clusterName
+    name: CLUSTER-NAME
+    type: string
+  - JSONPath: .status.endpoint
+    name: ENDPOINT
+    type: string
+  - JSONPath: .spec.classRef.name
+    name: CLUSTER-CLASS
+    type: string
+  - JSONPath: .spec.location
+    name: LOCATION
+    type: string
+  - JSONPath: .spec.reclaimPolicy
+    name: RECLAIM-POLICY
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: compute.azure.crossplane.io
+  names:
+    kind: AKSCluster
+    plural: aksclusters
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            claimRef:
+              type: object
+            classRef:
+              type: object
+            connectionSecretRef:
+              type: object
+            disableRBAC:
+              type: boolean
+            dnsNamePrefix:
+              type: string
+            location:
+              type: string
+            nodeCount:
+              format: int64
+              maximum: 100
+              minimum: 0
+              type: number
+            nodeVMSize:
+              type: string
+            providerRef:
+              type: object
+            reclaimPolicy:
+              type: string
+            resourceGroupName:
+              type: string
+            version:
+              type: string
+          required:
+          - resourceGroupName
+          - location
+          - version
+          - nodeVMSize
+          - dnsNamePrefix
+          type: object
+        status:
+          properties:
+            appObjectID:
+              type: string
+            clusterName:
+              type: string
+            endpoint:
+              type: string
+            providerID:
+              type: string
+            runningOperation:
+              type: string
+            servicePrincipalID:
+              type: string
+            state:
+              type: string
+          required:
+          - endpoint
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: mysqlservers.database.azure.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.state
+    name: STATUS
+    type: string
+  - JSONPath: .spec.classRef.name
+    name: CLASS
+    type: string
+  - JSONPath: .spec.version
+    name: VERSION
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: database.azure.crossplane.io
+  names:
+    kind: MysqlServer
+    plural: mysqlservers
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            adminLoginName:
+              type: string
+            claimRef:
+              type: object
+            classRef:
+              type: object
+            connectionSecretRef:
+              type: object
+            location:
+              type: string
+            pricingTier:
+              properties:
+                family:
+                  type: string
+                tier:
+                  type: string
+                vcores:
+                  format: int64
+                  type: integer
+              required:
+              - tier
+              - vcores
+              - family
+              type: object
+            providerRef:
+              type: object
+            reclaimPolicy:
+              type: string
+            resourceGroupName:
+              type: string
+            sslEnforced:
+              type: boolean
+            storageProfile:
+              properties:
+                backupRetentionDays:
+                  format: int64
+                  type: integer
+                geoRedundantBackup:
+                  type: boolean
+                storageGB:
+                  format: int64
+                  type: integer
+              required:
+              - storageGB
+              type: object
+            version:
+              type: string
+          required:
+          - resourceGroupName
+          - location
+          - pricingTier
+          - storageProfile
+          - adminLoginName
+          - version
+          - providerRef
+          type: object
+        status:
+          properties:
+            endpoint:
+              type: string
+            message:
+              type: string
+            providerID:
+              type: string
+            runningOperation:
+              type: string
+            runningOperationType:
+              type: string
+            state:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: postgresqlservers.database.azure.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.state
+    name: STATUS
+    type: string
+  - JSONPath: .spec.classRef.name
+    name: CLASS
+    type: string
+  - JSONPath: .spec.version
+    name: VERSION
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: database.azure.crossplane.io
+  names:
+    kind: PostgresqlServer
+    plural: postgresqlservers
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            adminLoginName:
+              type: string
+            claimRef:
+              type: object
+            classRef:
+              type: object
+            connectionSecretRef:
+              type: object
+            location:
+              type: string
+            pricingTier:
+              properties:
+                family:
+                  type: string
+                tier:
+                  type: string
+                vcores:
+                  format: int64
+                  type: integer
+              required:
+              - tier
+              - vcores
+              - family
+              type: object
+            providerRef:
+              type: object
+            reclaimPolicy:
+              type: string
+            resourceGroupName:
+              type: string
+            sslEnforced:
+              type: boolean
+            storageProfile:
+              properties:
+                backupRetentionDays:
+                  format: int64
+                  type: integer
+                geoRedundantBackup:
+                  type: boolean
+                storageGB:
+                  format: int64
+                  type: integer
+              required:
+              - storageGB
+              type: object
+            version:
+              type: string
+          required:
+          - resourceGroupName
+          - location
+          - pricingTier
+          - storageProfile
+          - adminLoginName
+          - version
+          - providerRef
+          type: object
+        status:
+          properties:
+            endpoint:
+              type: string
+            message:
+              type: string
+            providerID:
+              type: string
+            runningOperation:
+              type: string
+            runningOperationType:
+              type: string
+            state:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: azurebuckets.storage.azure.crossplane.io
+spec:
+  group: storage.azure.crossplane.io
+  names:
+    kind: AzureBucket
+    plural: azurebuckets
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            accessTier:
+              type: string
+            connectionSecretNameOverride:
+              type: string
+            location:
+              type: string
+            name:
+              type: string
+            predefinedACL:
+              type: string
+            providerRef:
+              type: object
+            storage:
+              type: string
+          required:
+          - providerRef
+          type: object
+        status:
+          properties:
+            connectionSecretRef:
+              type: object
+            message:
+              type: string
+            providerID:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: providers.azure.crossplane.io
+spec:
+  group: azure.crossplane.io
+  names:
+    kind: Provider
+    plural: providers
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            credentialsSecretRef:
+              type: object
+          required:
+          - credentialsSecretRef
+          type: object
+        status:
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: kubernetesclusters.compute.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.bindingPhase
+    name: STATUS
+    type: string
+  - JSONPath: .spec.classReference.name
+    name: CLASS
+    type: string
+  - JSONPath: .spec.classReference.name
+    name: CLUSTER-CLASS
+    type: string
+  - JSONPath: .spec.resourceName.name
+    name: CLUSTER-REF
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: compute.crossplane.io
+  names:
+    kind: KubernetesCluster
+    plural: kubernetesclusters
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            classReference:
+              type: object
+            clusterVersion:
+              type: string
+            resourceName:
+              type: object
+            selector:
+              type: object
+          type: object
+        status:
+          properties:
+            credentialsSecret:
+              type: object
+            provisioner:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: workloads.compute.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.state
+    name: STATUS
+    type: string
+  - JSONPath: .spec.targetCluster.name
+    name: CLUSTER
+    type: string
+  - JSONPath: .spec.targetNamespace
+    name: NAMESPACE
+    type: string
+  - JSONPath: .spec.targetDeployment.metadata.name
+    name: DEPLOYMENT
+    type: string
+  - JSONPath: .status.service.loadBalancer.ingress[0].ip
+    name: SERVICE-EXTERNAL-IP
+    type: string
+  group: compute.crossplane.io
+  names:
+    kind: Workload
+    plural: workloads
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            resources:
+              items:
+                properties:
+                  apiVersion:
+                    type: string
+                  fieldPath:
+                    type: string
+                  kind:
+                    type: string
+                  name:
+                    type: string
+                  namespace:
+                    type: string
+                  resourceVersion:
+                    type: string
+                  secretName:
+                    type: string
+                  uid:
+                    type: string
+                required:
+                - secretName
+                type: object
+              type: array
+            targetCluster:
+              type: object
+            targetDeployment:
+              type: object
+            targetNamespace:
+              type: string
+            targetService:
+              type: object
+          required:
+          - targetCluster
+          - targetNamespace
+          - targetDeployment
+          - targetService
+          - resources
+          type: object
+        status:
+          properties:
+            deployment:
+              type: object
+            service:
+              type: object
+            state:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: resourceclasses.core.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .provisioner
+    name: PROVISIONER
+    type: string
+  - JSONPath: .providerRef.name
+    name: PROVIDER-REF
+    type: string
+  - JSONPath: .reclaimPolicy
+    name: RECLAIM-POLICY
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: core.crossplane.io
+  names:
+    kind: ResourceClass
+    plural: resourceclasses
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        parameters:
+          type: object
+        providerRef:
+          type: object
+        provisioner:
+          type: string
+        reclaimPolicy:
+          type: string
+      required:
+      - provisioner
+      - providerRef
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: gkeclusters.compute.gcp.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.state
+    name: STATUS
+    type: string
+  - JSONPath: .status.clusterName
+    name: CLUSTER-NAME
+    type: string
+  - JSONPath: .status.endpoint
+    name: ENDPOINT
+    type: string
+  - JSONPath: .spec.classRef.name
+    name: CLUSTER-CLASS
+    type: string
+  - JSONPath: .spec.location
+    name: LOCATION
+    type: string
+  - JSONPath: .spec.reclaimPolicy
+    name: RECLAIM-POLICY
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: compute.gcp.crossplane.io
+  names:
+    kind: GKECluster
+    plural: gkeclusters
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            addons:
+              items:
+                type: string
+              type: array
+            async:
+              type: boolean
+            claimRef:
+              type: object
+            classRef:
+              type: object
+            clusterSecondaryRangeName:
+              type: string
+            clusterVersion:
+              type: string
+            connectionSecretRef:
+              type: object
+            createSubnetwork:
+              type: object
+            diskSize:
+              type: string
+            enableAutorepair:
+              type: boolean
+            enableAutoscaling:
+              type: boolean
+            enableAutoupgrade:
+              type: boolean
+            enableBasicAuth:
+              type: boolean
+            enableCloudEndpoints:
+              type: boolean
+            enableCloudLogging:
+              type: boolean
+            enableCloudMonitoring:
+              type: boolean
+            enableIPAlias:
+              type: boolean
+            enableKubernetesAlpha:
+              type: boolean
+            enableLegacyAuthorization:
+              type: boolean
+            enableNetworkPolicy:
+              type: boolean
+            imageType:
+              type: string
+            labels:
+              type: object
+            localSSDCount:
+              format: int64
+              type: integer
+            machineType:
+              type: string
+            maintenanceWindow:
+              type: string
+            maxNodes:
+              format: int64
+              type: integer
+            maxNodesPerPool:
+              format: int64
+              type: integer
+            minCPUPlatform:
+              type: string
+            minNodes:
+              format: int64
+              type: integer
+            network:
+              type: string
+            noIssueClientCertificates:
+              type: boolean
+            nodeLabels:
+              items:
+                type: string
+              type: array
+            nodeLocations:
+              items:
+                type: string
+              type: array
+            nodeTaints:
+              items:
+                type: string
+              type: array
+            nodeVersion:
+              items:
+                type: string
+              type: array
+            numNodes:
+              format: int64
+              type: integer
+            password:
+              type: string
+            preemtible:
+              type: boolean
+            providerRef:
+              type: object
+            reclaimPolicy:
+              type: string
+            scopes:
+              items:
+                type: string
+              type: array
+            serviceAccount:
+              type: string
+            serviceSecondaryRangeName:
+              type: string
+            subnetwork:
+              type: string
+            tags:
+              items:
+                type: string
+              type: array
+            username:
+              type: string
+            zone:
+              type: string
+          type: object
+        status:
+          properties:
+            clusterName:
+              type: string
+            endpoint:
+              type: string
+            state:
+              type: string
+          required:
+          - clusterName
+          - endpoint
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: cloudsqlinstances.database.gcp.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.state
+    name: STATUS
+    type: string
+  - JSONPath: .spec.classRef.name
+    name: CLASS
+    type: string
+  - JSONPath: .spec.databaseVersion
+    name: VERSION
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: database.gcp.crossplane.io
+  names:
+    kind: CloudsqlInstance
+    plural: cloudsqlinstances
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            claimRef:
+              type: object
+            classRef:
+              type: object
+            connectionSecretRef:
+              type: object
+            databaseVersion:
+              type: string
+            providerRef:
+              type: object
+            reclaimPolicy:
+              type: string
+            region:
+              type: string
+            storageGB:
+              format: int64
+              type: integer
+            storageType:
+              type: string
+            tier:
+              type: string
+          required:
+          - region
+          - storageType
+          - storageGB
+          - databaseVersion
+          - tier
+          - providerRef
+          type: object
+        status:
+          properties:
+            endpoint:
+              type: string
+            instanceName:
+              type: string
+            message:
+              type: string
+            providerID:
+              type: string
+            state:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: gcpbuckets.storage.gcp.crossplane.io
+spec:
+  group: storage.gcp.crossplane.io
+  names:
+    kind: GCPBucket
+    plural: gcpbuckets
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            claimRef:
+              type: object
+            classRef:
+              type: object
+            connectionSecretNameOverride:
+              type: string
+            location:
+              type: string
+            name:
+              type: string
+            predefinedACL:
+              type: string
+            providerRef:
+              type: object
+            storageClass:
+              type: string
+            versioning:
+              type: boolean
+          required:
+          - providerRef
+          type: object
+        status:
+          properties:
+            connectionSecretRef:
+              type: object
+            message:
+              type: string
+            providerID:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: providers.gcp.crossplane.io
+spec:
+  group: gcp.crossplane.io
+  names:
+    kind: Provider
+    plural: providers
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            credentialsSecretRef:
+              type: object
+            projectID:
+              type: string
+            requiredPermissions:
+              items:
+                type: string
+              type: array
+          required:
+          - credentialsSecretRef
+          - projectID
+          type: object
+        status:
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: buckets.storage.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.bindingPhase
+    name: STATUS
+    type: string
+  - JSONPath: .spec.classReference.name
+    name: CLASS
+    type: string
+  - JSONPath: .spec.predefinedACL
+    name: PREDEFINED-ACL
+    type: string
+  - JSONPath: .spec.localPermission
+    name: LOCAL-PERMISSION
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: storage.crossplane.io
+  names:
+    kind: Bucket
+    plural: buckets
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            classReference:
+              type: object
+            connectionSecretNameOverride:
+              maxLength: 255
+              minLength: 1
+              type: string
+            localPermission:
+              enum:
+              - Read
+              - Write
+              - ReadWrite
+              type: string
+            name:
+              maxLength: 63
+              minLength: 3
+              type: string
+            predefinedACL:
+              enum:
+              - Private
+              - PublicRead
+              - PublicReadWrite
+              - AuthenticatedRead
+              type: string
+            resourceName:
+              type: object
+            selector:
+              type: object
+          type: object
+        status:
+          properties:
+            provisioner:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: mysqlinstances.storage.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.bindingPhase
+    name: STATUS
+    type: string
+  - JSONPath: .spec.classReference.name
+    name: CLASS
+    type: string
+  - JSONPath: .spec.engineVersion
+    name: VERSION
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: storage.crossplane.io
+  names:
+    kind: MySQLInstance
+    plural: mysqlinstances
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            classReference:
+              type: object
+            engineVersion:
+              enum:
+              - "5.6"
+              - "5.7"
+              type: string
+            resourceName:
+              type: object
+            selector:
+              type: object
+          required:
+          - engineVersion
+          type: object
+        status:
+          properties:
+            provisioner:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: postgresqlinstances.storage.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.bindingPhase
+    name: STATUS
+    type: string
+  - JSONPath: .spec.classReference.name
+    name: CLASS
+    type: string
+  - JSONPath: .spec.engineVersion
+    name: VERSION
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: storage.crossplane.io
+  names:
+    kind: PostgreSQLInstance
+    plural: postgresqlinstances
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            classReference:
+              type: object
+            engineVersion:
+              enum:
+              - "9.6"
+              type: string
+            resourceName:
+              type: object
+            selector:
+              type: object
+          type: object
+        status:
+          properties:
+            provisioner:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: crossplane
+    chart: crossplane-0.0.0-322.df5b720
+    heritage: Tiller
+    release: crossplane
+  name: crossplane
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - compute.crossplane.io
+  - core.crossplane.io
+  - storage.crossplane.io
+  - aws.crossplane.io
+  - compute.aws.crossplane.io
+  - database.aws.crossplane.io
+  - storage.aws.crossplane.io
+  - azure.crossplane.io
+  - compute.azure.crossplane.io
+  - database.azure.crossplane.io
+  - gcp.crossplane.io
+  - compute.gcp.crossplane.io
+  - database.gcp.crossplane.io
+  resources:
+  - '*'
+  verbs:
+  - '*'
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: crossplane
+    chart: crossplane-0.0.0-322.df5b720
+    heritage: Tiller
+    release: crossplane
+  name: crossplane
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: crossplane
+subjects:
+- kind: ServiceAccount
+  name: crossplane
+  namespace: crossplane-system
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: crossplane
+    chart: crossplane-0.0.0-322.df5b720
+    heritage: Tiller
+    release: crossplane
+  name: crossplane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crossplane
+      release: crossplane
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: crossplane
+        release: crossplane
+    spec:
+      containers:
+      - image: crossplane/crossplane:v0.0.0-322.df5b720
+        imagePullPolicy: Always
+        name: crossplane
+        resources:
+          limits:
+            cpu: 100m
+            memory: 30Mi
+          requests:
+            cpu: 100m
+            memory: 20Mi
+      serviceAccountName: crossplane
+

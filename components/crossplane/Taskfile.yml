@@ -1,0 +1,21 @@
+version: 2
+
+vars:
+  KR8_COMPONENT: cert_manager
+  CHART_VER: 0.0.0-322.df5b720
+  CHART_NAME: crossplane
+
+tasks:
+  fetch:
+    desc: "fetch component dependencies"
+    cmds:
+      - rm -fr charts; mkdir charts
+      - helm fetch --repo https://charts.crossplane.io/master/ --untar --untardir ./charts --version "{{.CHART_VER}}" "{{.CHART_NAME}}"
+
+
+  generate:
+    desc: "generate"
+    cmds:
+      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers clean-output
+      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers helm-render-with-patch "{{.CHART_NAME}}" patches.jsonnet
+

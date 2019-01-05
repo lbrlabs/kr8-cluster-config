@@ -1,0 +1,80 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: buckets.storage.crossplane.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.bindingPhase
+    name: STATUS
+    type: string
+  - JSONPath: .spec.classReference.name
+    name: CLASS
+    type: string
+  - JSONPath: .spec.predefinedACL
+    name: PREDEFINED-ACL
+    type: string
+  - JSONPath: .spec.localPermission
+    name: LOCAL-PERMISSION
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: storage.crossplane.io
+  names:
+    kind: Bucket
+    plural: buckets
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            classReference:
+              type: object
+            connectionSecretNameOverride:
+              maxLength: 255
+              minLength: 1
+              type: string
+            localPermission:
+              enum:
+              - Read
+              - Write
+              - ReadWrite
+              type: string
+            name:
+              maxLength: 63
+              minLength: 3
+              type: string
+            predefinedACL:
+              enum:
+              - Private
+              - PublicRead
+              - PublicReadWrite
+              - AuthenticatedRead
+              type: string
+            resourceName:
+              type: object
+            selector:
+              type: object
+          type: object
+        status:
+          properties:
+            provisioner:
+              type: string
+          type: object
+  version: v1alpha1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

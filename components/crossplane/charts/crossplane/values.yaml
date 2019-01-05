@@ -1,0 +1,11 @@
+replicas: 1
+
+deploymentStrategy: RollingUpdate
+
+image:
+  repository: crossplane/crossplane
+  tag: v0.0.0-322.df5b720
+  pullPolicy: Always
+
+imagePullSecrets:
+- dockerhub
