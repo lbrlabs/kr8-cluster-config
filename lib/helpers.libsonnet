@@ -2,6 +2,9 @@
   patchPodSpec(dep, patch)::
     dep { spec+: { template+: { spec+: patch } } },
 
+  patchPodMetadata(dep, patch)::
+    dep { spec+: { template+: { metadata+: patch } } },
+
   patchContainer(container)::
     {
       spec+: { template+: { spec+: {

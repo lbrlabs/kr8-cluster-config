@@ -8,16 +8,31 @@ kube.objectValues(
       apiVersion: 'ark.heptio.com/v1',
       kind: 'BackupStorageLocation',
       metadata: {
-        name: config.name,
+        name: config.backup_name,
         namespace: config.namespace,
       },
       spec: {
         provider: config.cloud_provider,
         objectStorage: {
           bucket: config.bucket_name,
+          prefix: config.prefix,
         },
-        config: config.config,
+        config: config.backup_config,
       },
     },
-  }
+  } +
+  {
+    VolumeSnapshotLocation: {
+      apiVersion: 'ark.heptio.com/v1',
+      kind: 'VolumeSnapshotLocation',
+      metadata: {
+        name: config.volume_name,
+        namespace: config.namespace,
+      },
+      spec: {
+        provider: config.cloud_provider,
+        config: config.volume_config,
+      },
+    },
+  },
 )

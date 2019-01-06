@@ -11,6 +11,7 @@ spec:
       labels:
         component: ark
       annotations:
+        iam.amazonaws.com/role: arn:aws:iam::<AWS_ACCOUNT_ID>:role/<HEPTIO_ARK_ROLE_NAME>
         prometheus.io/scrape: "true"
         prometheus.io/port: "8085"
         prometheus.io/path: "/metrics"
@@ -20,27 +21,16 @@ spec:
       containers:
         - name: ark
           image: gcr.io/heptio-images/ark:latest
+          ports:
+            - name: metrics
+              containerPort: 8085
           command:
             - /ark
           args:
             - server
           volumeMounts:
-            - name: cloud-credentials
-              mountPath: /credentials
             - name: plugins
               mountPath: /plugins
-            - name: scratch
-              mountPath: /scratch
-          env:
-            - name: AWS_SHARED_CREDENTIALS_FILE
-              value: /credentials/cloud
-            - name: ARK_SCRATCH_DIR
-              value: /scratch
       volumes:
-        - name: cloud-credentials
-          secret:
-            secretName: cloud-credentials
         - name: plugins
-          emptyDir: {}
-        - name: scratch
           emptyDir: {}

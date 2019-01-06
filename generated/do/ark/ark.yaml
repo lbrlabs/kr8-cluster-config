@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: ark
+  namespace: heptio-ark
+spec:
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        iam.amazonaws.com/role: ""
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8085"
+        prometheus.io/scrape: "true"
+      labels:
+        component: ark
+    spec:
+      containers:
+      - args:
+        - server
+        command:
+        - /ark
+        image: gcr.io/heptio-images/ark:v0.10.0
+        name: ark
+        ports:
+        - containerPort: 8085
+          name: metrics
+        volumeMounts:
+        - mountPath: /plugins
+          name: plugins
+      restartPolicy: Always
+      serviceAccountName: ark
+      volumes:
+      - name: plugins
+
