@@ -11,12 +11,14 @@
     nginx_ingress: { path: 'components/nginx_ingress' },
     external_dns: { path: 'components/external_dns' },
     cert_manager: { path: 'components/cert_manager' },
-    //guestbook: { path: 'components/guestbook' },
     prometheus: { path: 'components/prometheus' },
-    //grafana: { path: 'components/grafana' },
+    pharos: { path: 'components/pharos' },
   },
 
 
+  pharos+: {
+    subpath: 'generated/gcloud',
+  },
   guestbook+: {
     url: 'guestbook.lbrlabs.com',
   },

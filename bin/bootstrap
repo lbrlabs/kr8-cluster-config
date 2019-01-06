@@ -26,7 +26,7 @@ then
   echo "Must select a cluster"
 fi
 
-bin/deployer update do sealed_secrets
+bin/deployer update ${cluster} sealed_secrets
 kubectl apply -f generated/${cluster}/pharos/.
 
 
