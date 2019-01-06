@@ -50,6 +50,18 @@ local config = std.extVar('kr8');
                     },
                   },
                 ],
+                initContainers+: [
+                  {
+                    image: 'gcr.io/stackpoint-public/ark-blockstore-digitalocean:latest',
+                    name: 'ark-blockstore-digitalocean',
+                    volumeMounts: [
+                      {
+                        name: 'plugins',
+                        mountPath: '/target',
+                      },
+                    ],
+                  },
+                ],
               },
               metadata+: {
                 annotations+: {

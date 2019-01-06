@@ -40,6 +40,12 @@ spec:
           name: plugins
         - mountPath: /credentials
           name: cloud-credentials
+      initContainers:
+      - image: gcr.io/stackpoint-public/ark-blockstore-digitalocean:latest
+        name: ark-blockstore-digitalocean
+        volumeMounts:
+        - mountPath: /target
+          name: plugins
       restartPolicy: Always
       serviceAccountName: ark
       volumes:
