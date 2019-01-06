@@ -25,5 +25,6 @@ tasks:
       - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers clean-output
       - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers yaml-install vendored/00-prereqs.yaml
       - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers jsonnet-render 01_namespace.jsonnet
+      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers jsonnet-render secrets.jsonnet
       - KR8_COMPONENT={{.KR8_COMPONENT}} KR8_JSONNET_ARGS='--ext-str-file inputArk=vendored/ark.yaml' kr8-helpers jsonnet-render ark.jsonnet
 

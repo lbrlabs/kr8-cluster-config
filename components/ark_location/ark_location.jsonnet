@@ -30,7 +30,7 @@ kube.objectValues(
         namespace: config.namespace,
       },
       spec: {
-        provider: config.cloud_provider,
+        provider: config.volume_provider,
         config: config.volume_config,
       },
     },

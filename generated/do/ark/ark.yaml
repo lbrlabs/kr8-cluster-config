@@ -19,8 +19,17 @@ spec:
       containers:
       - args:
         - server
+        - --default-volume-snapshot-locations=digitalocean-blockstore:default
         command:
         - /ark
+        env:
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: /credentials/cloud
+        - name: DIGITALOCEAN_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: digitalocean_token
+              name: cloud-credentials
         image: gcr.io/heptio-images/ark:v0.10.0
         name: ark
         ports:
@@ -29,8 +38,13 @@ spec:
         volumeMounts:
         - mountPath: /plugins
           name: plugins
+        - mountPath: /credentials
+          name: cloud-credentials
       restartPolicy: Always
       serviceAccountName: ark
       volumes:
       - name: plugins
+      - name: cloud-credentials
+        secret:
+          secretName: cloud-credentials
 

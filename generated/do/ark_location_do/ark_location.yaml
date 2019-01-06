@@ -9,18 +9,18 @@ spec:
     region: sfo2
     s3Url: https://sfo2.digitaloceanspaces.com
   objectStorage:
-    bucket: lbrlabs-ark
+    bucket: lbrlabs
     prefix: do
-  provider: digitalocean
+  provider: aws
 
 ---
 apiVersion: ark.heptio.com/v1
 kind: VolumeSnapshotLocation
 metadata:
-  name: ark-location
+  name: default
   namespace: heptio-ark
 spec:
   config:
-    provider: digitalocean-blockstore
-  provider: digitalocean
+    region: sfo2
+  provider: digitalocean-blockstore
 

@@ -12,10 +12,45 @@ local config = std.extVar('kr8');
         helpers.patchContainerNamed(
           'ark', {
             image: 'gcr.io/heptio-images/ark:%s' % config.version,
+            args: [
+              'server',
+              '--default-volume-snapshot-locations=digitalocean-blockstore:default',
+            ],
+            volumeMounts+: [
+              {
+                name: 'cloud-credentials',
+                mountPath: '/credentials',
+              },
+            ],
+            env+: [
+              {
+                name: 'AWS_SHARED_CREDENTIALS_FILE',
+                value: '/credentials/cloud',
+              },
+              {
+                name: 'DIGITALOCEAN_TOKEN',
+                valueFrom: {
+                  secretKeyRef: {
+                    key: 'digitalocean_token',
+                    name: 'cloud-credentials',
+                  },
+                },
+              },
+            ],
           }
         ) + {
           spec+: {
             template+: {
+              spec+: {
+                volumes+: [
+                  {
+                    name: 'cloud-credentials',
+                    secret: {
+                      secretName: 'cloud-credentials',
+                    },
+                  },
+                ],
+              },
               metadata+: {
                 annotations+: {
                   'iam.amazonaws.com/role': config.iam_role,
