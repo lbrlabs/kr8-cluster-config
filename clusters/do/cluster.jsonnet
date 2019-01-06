@@ -14,6 +14,7 @@
     cert_manager: { path: 'components/cert_manager' },
     ark: { path: 'components/ark' },
     ark_location_do: { path: 'components/ark_location' },
+    pharos: { path: 'components/pharos' },
     //prometheus: { path: 'components/prometheus' },
     //grafana: { path: 'components/grafana' },
   },
@@ -33,6 +34,9 @@
       'briggs.work',
     ],
     tolerateMasters: false,
+  },
+  pharos+: {
+    subpath: 'generated/do',
   },
 
   guestbook+: {
