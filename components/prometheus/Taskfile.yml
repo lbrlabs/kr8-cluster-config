@@ -22,5 +22,6 @@ tasks:
     desc: "generate"
     cmds:
       - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers clean-output
+      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers jsonnet-render 01_namespace.jsonnet
       - KR8_COMPONENT={{.KR8_COMPONENT}} KR8_JSONNET_ARGS="--jpath jsonnet --jpath vendor --prune=false" kr8-helpers jsonnet-render jsonnet/main.jsonnet 
 
