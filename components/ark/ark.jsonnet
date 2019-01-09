@@ -12,8 +12,7 @@ local config = std.extVar('kr8');
         helpers.patchContainerNamed(
           'ark', {
             image: 'gcr.io/heptio-images/ark:%s' % config.version,
-            args: [
-              'server',
+            [if std.objectHas(config, 'digitalocean_token') then 'args']+: [
               '--default-volume-snapshot-locations=digitalocean-blockstore:default',
             ],
             volumeMounts+: [
@@ -22,7 +21,7 @@ local config = std.extVar('kr8');
                 mountPath: '/credentials',
               },
             ],
-            env+: [
+            [if kr8_cluster.cluster_type == 'digitalocean' then 'env']+: [
               {
                 name: 'AWS_SHARED_CREDENTIALS_FILE',
                 value: '/credentials/cloud',
@@ -35,6 +34,12 @@ local config = std.extVar('kr8');
                     name: 'cloud-credentials',
                   },
                 },
+              },
+            ],
+            [if kr8_cluster.cluster_type == 'gke' then 'env']+: [
+              {
+                name: 'GOOGLE_APPLICATION_CREDENTIALS',
+                value: '/credentials/cloud',
               },
             ],
           }
@@ -50,7 +55,7 @@ local config = std.extVar('kr8');
                     },
                   },
                 ],
-                initContainers+: [
+                [if kr8_cluster.cluster_type == 'digitalocean' then 'initContainers']+: [
                   {
                     image: 'gcr.io/stackpoint-public/ark-blockstore-digitalocean:latest',
                     name: 'ark-blockstore-digitalocean',
@@ -64,18 +69,15 @@ local config = std.extVar('kr8');
                 ],
               },
               metadata+: {
-                annotations+: {
+                annotations+: if kr8_cluster.cluster_type == 'aws' then {
                   'iam.amazonaws.com/role': config.iam_role,
+                } else {
+                  'iam.amazonaws.com/role': null,
                 },
               },
             },
           },
         },
-      /*
-      helpers.patchPodMetadata('ark', {
-        annotatations: [],
-      },
-      */
     }
   )
 ]

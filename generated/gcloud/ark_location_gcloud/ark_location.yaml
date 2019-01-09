@@ -1,0 +1,21 @@
+---
+apiVersion: ark.heptio.com/v1
+kind: BackupStorageLocation
+metadata:
+  name: default
+  namespace: heptio-ark
+spec:
+  objectStorage:
+    bucket: lbrlabs-ark
+    prefix: gcloud
+  provider: gcp
+
+---
+apiVersion: ark.heptio.com/v1
+kind: VolumeSnapshotLocation
+metadata:
+  name: default
+  namespace: heptio-ark
+spec:
+  provider: gcp
+

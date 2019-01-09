@@ -1,0 +1,181 @@
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    component: ark
+  name: backups.ark.heptio.com
+spec:
+  group: ark.heptio.com
+  names:
+    kind: Backup
+    plural: backups
+  scope: Namespaced
+  version: v1
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    component: ark
+  name: schedules.ark.heptio.com
+spec:
+  group: ark.heptio.com
+  names:
+    kind: Schedule
+    plural: schedules
+  scope: Namespaced
+  version: v1
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    component: ark
+  name: restores.ark.heptio.com
+spec:
+  group: ark.heptio.com
+  names:
+    kind: Restore
+    plural: restores
+  scope: Namespaced
+  version: v1
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    component: ark
+  name: downloadrequests.ark.heptio.com
+spec:
+  group: ark.heptio.com
+  names:
+    kind: DownloadRequest
+    plural: downloadrequests
+  scope: Namespaced
+  version: v1
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    component: ark
+  name: deletebackuprequests.ark.heptio.com
+spec:
+  group: ark.heptio.com
+  names:
+    kind: DeleteBackupRequest
+    plural: deletebackuprequests
+  scope: Namespaced
+  version: v1
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    component: ark
+  name: podvolumebackups.ark.heptio.com
+spec:
+  group: ark.heptio.com
+  names:
+    kind: PodVolumeBackup
+    plural: podvolumebackups
+  scope: Namespaced
+  version: v1
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    component: ark
+  name: podvolumerestores.ark.heptio.com
+spec:
+  group: ark.heptio.com
+  names:
+    kind: PodVolumeRestore
+    plural: podvolumerestores
+  scope: Namespaced
+  version: v1
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    component: ark
+  name: resticrepositories.ark.heptio.com
+spec:
+  group: ark.heptio.com
+  names:
+    kind: ResticRepository
+    plural: resticrepositories
+  scope: Namespaced
+  version: v1
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    component: ark
+  name: backupstoragelocations.ark.heptio.com
+spec:
+  group: ark.heptio.com
+  names:
+    kind: BackupStorageLocation
+    plural: backupstoragelocations
+  scope: Namespaced
+  version: v1
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    component: ark
+  name: volumesnapshotlocations.ark.heptio.com
+spec:
+  group: ark.heptio.com
+  names:
+    kind: VolumeSnapshotLocation
+    plural: volumesnapshotlocations
+  scope: Namespaced
+  version: v1
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: heptio-ark
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    component: ark
+  name: ark
+  namespace: heptio-ark
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    component: ark
+  name: ark
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: ark
+  namespace: heptio-ark
+

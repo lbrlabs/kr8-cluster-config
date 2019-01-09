@@ -21,13 +21,8 @@ spec:
         command:
         - /ark
         env:
-        - name: AWS_SHARED_CREDENTIALS_FILE
+        - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /credentials/cloud
-        - name: DIGITALOCEAN_TOKEN
-          valueFrom:
-            secretKeyRef:
-              key: digitalocean_token
-              name: cloud-credentials
         image: gcr.io/heptio-images/ark:v0.10.0
         name: ark
         ports:
@@ -38,12 +33,6 @@ spec:
           name: plugins
         - mountPath: /credentials
           name: cloud-credentials
-      initContainers:
-      - image: gcr.io/stackpoint-public/ark-blockstore-digitalocean:latest
-        name: ark-blockstore-digitalocean
-        volumeMounts:
-        - mountPath: /target
-          name: plugins
       restartPolicy: Always
       serviceAccountName: ark
       volumes:

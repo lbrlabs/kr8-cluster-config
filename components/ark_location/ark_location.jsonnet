@@ -17,7 +17,7 @@ kube.objectValues(
           bucket: config.bucket_name,
           prefix: config.prefix,
         },
-        config: config.backup_config,
+        [if std.objectHas(config, 'backup_config') then 'config']: config.backup_config,
       },
     },
   } +
@@ -31,7 +31,7 @@ kube.objectValues(
       },
       spec: {
         provider: config.volume_provider,
-        config: config.volume_config,
+        [if std.objectHas(config, 'volume_config') then 'config']: config.volume_config,
       },
     },
   },
