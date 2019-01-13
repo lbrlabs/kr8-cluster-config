@@ -27,6 +27,19 @@ local kube = import 'kube.libsonnet';
 
   namespace(name): { metadata+: { namespace: name } },
 
+  allserviceaccounts_namespace_binding(roleref, namespace):
+    // A binding in the user's personal namespace
+    kube.RoleBinding(roleref.metadata.name) {
+      roleRef_: roleref,
+      subjects: [
+        {
+          kind: 'Group',
+          name: 'system:serviceaccounts',
+          apiGroup: 'rbac.authorization.k8s.io',
+        },
+      ],
+    } + $.namespace(namespace),
+
   personal_namespace_binding(user, roleref, nameformat):
     // A binding in the user's personal namespace
     kube.RoleBinding(std.format(nameformat, user)) {

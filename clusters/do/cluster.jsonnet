@@ -15,6 +15,7 @@
     ark: { path: 'components/ark' },
     ark_location_do: { path: 'components/ark_location' },
     pharos: { path: 'components/pharos' },
+    psp: { path: 'components/psp' },
     //prometheus: { path: 'components/prometheus' },
     //grafana: { path: 'components/grafana' },
   },
