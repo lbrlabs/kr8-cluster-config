@@ -5,16 +5,19 @@
          "cmds": [
             "kr8-helpers check-environment",
             {
-               "task": "do"
-            },
-            {
                "task": "gcloud"
             },
             {
-               "task": "kops"
+               "task": "homelab"
+            },
+            {
+               "task": "do"
             },
             {
                "task": "minikube"
+            },
+            {
+               "task": "kops"
             }
          ]
       },
@@ -73,6 +76,34 @@
             "kr8 jsonnet render --cluster gcloud --format yaml templates/task-generate-cluster-parallel.jsonnet > tmp/gcloud/Taskfile.yml"
          ],
          "desc": "generate task file in tmp directory for cluster: gcloud"
+      },
+      "homelab": {
+         "cmds": [
+            {
+               "task": "homelab_taskfile"
+            },
+            "task -d tmp/homelab generate"
+         ],
+         "desc": "generate components for homelab"
+      },
+      "homelab_deploy": {
+         "cmds": [
+            "task -d tmp/homelab deploy"
+         ],
+         "desc": "deploy all components for cluster: homelab"
+      },
+      "homelab_dryrun": {
+         "cmds": [
+            "task -d tmp/homelab dryrun"
+         ],
+         "desc": "dryrun all components for cluster: homelab"
+      },
+      "homelab_taskfile": {
+         "cmds": [
+            "mkdir -p tmp/homelab",
+            "kr8 jsonnet render --cluster homelab --format yaml templates/task-generate-cluster-parallel.jsonnet > tmp/homelab/Taskfile.yml"
+         ],
+         "desc": "generate task file in tmp directory for cluster: homelab"
       },
       "kops": {
          "cmds": [
@@ -133,16 +164,19 @@
       "taskfiles": {
          "cmds": [
             {
-               "task": "do_taskfile"
-            },
-            {
                "task": "gcloud_taskfile"
             },
             {
-               "task": "kops_taskfile"
+               "task": "homelab_taskfile"
+            },
+            {
+               "task": "do_taskfile"
             },
             {
                "task": "minikube_taskfile"
+            },
+            {
+               "task": "kops_taskfile"
             }
          ],
          "desc": "generate task files for all clusters"
