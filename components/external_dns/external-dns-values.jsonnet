@@ -9,7 +9,8 @@ local config = std.extVar('kr8');
   aws: {} + if std.objectHas(config, 'aws') then config.aws else {},
   extraEnv: {} + if std.objectHas(config, 'extraEnv') then config.extraEnv else {},
   [if config.tolerateMasters then 'nodeSelector']: {
-    'node-role.kubernetes.io/master': '',
+    //'node-role.kubernetes.io/master': '',
+    'node-role.kubernetes.io/controlplane': 'true',
   },
   [if config.tolerateMasters then 'tolerations']: [
       {
