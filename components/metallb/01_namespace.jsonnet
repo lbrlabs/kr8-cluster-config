@@ -5,9 +5,6 @@ local config = std.extVar('kr8');
 [
   kube.Namespace(config.namespace) {
     metadata+: {
-      annotations+: {
-        'iam.amazonaws.com/permitted': 'kiam-role-techops-ark-.*',
-      },
     },
   },
 ]

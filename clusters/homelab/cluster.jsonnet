@@ -8,6 +8,7 @@
   },
   _components+: {
     sealed_secrets: { path: 'components/sealed_secrets' },
+    metallb: { path: 'components/metallb' },
   },
 
   sealed_secrets+: (import 'sealed-secret.key'),

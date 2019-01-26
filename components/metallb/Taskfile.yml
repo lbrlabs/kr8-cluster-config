@@ -1,0 +1,23 @@
+version: 2
+
+vars:
+  KR8_COMPONENT: metallb
+  CHART_VER: 0.8.3
+  CHART_NAME: metallb
+
+
+tasks:
+  fetch:
+    desc: "fetch component dependencies"
+    cmds:
+      - rm -fr vendored; mkdir -p vendored
+      - helm fetch --repo https://kubernetes-charts.storage.googleapis.com --untar --untardir ./charts --version "{{.CHART_VER}}" "{{.CHART_NAME}}"
+
+
+  generate:
+    desc: "generate"
+    cmds:
+      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers clean-output
+      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers jsonnet-render 01_namespace.jsonnet
+      - KR8_COMPONENT={{.KR8_COMPONENT}} kr8-helpers helm-render "{{.CHART_NAME}}"
+
